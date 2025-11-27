@@ -267,24 +267,24 @@
             <label class="radio-label">
                 <input type="radio" name="c-bean" value="C4 Coffee Co. - Banko Chelchele" checked>
                 <div class="option-content">
-                    <span class="option-title">C4 Coffee Co. • Banko Chelchele</span>
-                    <span class="option-desc">產地：耶加雪菲 | 處理法：厭氧日曬 | 風味：莓果醬、橙糖。</span>
+                    <span class="option-title">🇳🇿 紐西蘭 C4 Coffee Co.</span>
+                    <span class="option-desc">產區：耶加雪菲 | 處理法：厭氧日曬 | 風味：莓果果醬, 橙糖感</span>
                 </div>
             </label>
             
             <label class="radio-label">
                 <input type="radio" name="c-bean" value="Berg Wu Selection - Sidama S24/02">
                 <div class="option-content">
-                    <span class="option-title">Berg Wu Selection • Sidama S24/02</span>
-                    <span class="option-desc">來源：台灣冠軍選豆 | 產區：西達摩 | 處理法：日曬 | 風味：紅葡萄、細緻花香。</span>
+                    <span class="option-title">🇹🇼 桃園 焱 Yan Coffee (Berg Wu Selection)</span>
+                    <span class="option-desc">產區：西達摩 | 處理法：日曬 | 風味：紅葡萄, 細緻花香</span>
                 </div>
             </label>
             
             <label class="radio-label">
                 <input type="radio" name="c-bean" value="Fuglen - Danche Espresso">
                 <div class="option-content">
-                    <span class="option-title">Fuglen • Danche Espresso</span>
-                    <span class="option-desc">來源：東京 Fuglen | 產區：衣索比亞 | 處理法：水洗 | 風味：草莓、深可可。</span>
+                    <span class="option-title">🇯🇵 東京 Fuglen Coffee</span>
+                    <span class="option-desc">品名：Danche | 處理法：水洗 | 風味：草莓, 深可可</span>
                 </div>
             </label>
         </div>
@@ -425,17 +425,22 @@
         
         if (type === 'coffee') {
             const bean = document.querySelector('input[name="c-bean"]:checked').value;
+            // 取得 Option Title 的文字內容 (包含國旗和咖啡店名)
+            const titleElement = document.querySelector('input[name="c-bean"]:checked').closest('.radio-label').querySelector('.option-title');
+            const beanTitle = titleElement.textContent;
+            
+            // 取得 Option Desc 的文字內容 (包含所有細節)
+            const descElement = document.querySelector('input[name="c-bean"]:checked').closest('.radio-label').querySelector('.option-desc');
+            const beanDesc = descElement.textContent;
+            
             const temp = document.querySelector('input[name="c-temp"]:checked').value;
             
-            // 解析出選定的烘豆師和豆子名稱
-            const [roaster, beanName] = bean.split(' - ');
-
             content = `
                 <strong>☕ 手沖單品咖啡</strong><br>
                 <span style="font-size:0.9em; color:#666;">淺焙・衣索比亞精選單品</span><br>
                 <br>
-                選豆：${beanName}<br>
-                來源：${roaster}<br>
+                選豆來源：${beanTitle}<br>
+                細節：${beanDesc}<br>
                 溫度：${temp}
             `;
         } else {
