@@ -1,481 +1,465 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="zh-TW">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2299.77">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cozy Corner - Mily’s select</title>
+    <style>
+        :root {
+            --bg-color: #f7f5f0; /* 米白紙質感 */
+            --text-color: #4a4a4a;
+            --accent-green: #5c7c58; /* 抹茶綠 */
+            --accent-brown: #8b5e3c; /* 咖啡褐 */
+            --light-gray: #e0e0e0;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, "PingFang TC", "Heiti TC", "Microsoft JhengHei", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--light-gray);
+            padding-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin: 0;
+            letter-spacing: 2px;
+            color: var(--text-color);
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            color: #888;
+            font-style: italic;
+            margin-top: 5px;
+            font-family: serif;
+        }
+
+        /* Tabs for Coffee vs Matcha */
+        .tabs {
+            display: flex;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--light-gray);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: #fff;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: 0.3s;
+            color: #aaa;
+        }
+
+        .tab-btn.active {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .tab-coffee.active { background-color: var(--accent-brown); }
+        .tab-matcha.active { background-color: var(--accent-green); }
+
+        /* Sections */
+        .menu-section {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .menu-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            font-size: 1.1rem;
+            border-left: 4px solid var(--text-color);
+            padding-left: 10px;
+            margin-bottom: 15px;
+            margin-top: 0;
+        }
+
+        .desc-text {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        /* Form Elements */
+        .option-group {
+            margin-bottom: 25px;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .radio-label:hover {
+            border-color: #999;
+        }
+        
+        /* 抹茶溫度選項修正 */
+        .m-temp-label {
+            display: flex;
+            align-items: center;
+            padding: 12px 0; /* 修正選項上下間距 */
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+            justify-content: center;
+            flex: 1; 
+        }
+
+        .m-temp-label input {
+            margin-right: 10px; /* 增加文字與 Radio Button 的距離 */
+            accent-color: var(--text-color);
+            transform: scale(1.2);
+        }
+
+        .radio-label input {
+            margin-right: 15px;
+            accent-color: var(--text-color);
+            transform: scale(1.2);
+        }
+
+        .option-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .option-title {
+            font-weight: bold;
+            font-size: 1rem;
+            margin-bottom: 2px;
+        }
+
+        .option-desc {
+            font-size: 0.85rem;
+            color: #777;
+        }
+
+        .section-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #999;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        /* Action Button */
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+        
+        .btn-coffee { background-color: var(--accent-brown); }
+        .btn-coffee:hover { background-color: #6d4a2f; }
+        
+        .btn-matcha { background-color: var(--accent-green); }
+        .btn-matcha:hover { background-color: #466042; }
+
+        /* Modal / Receipt */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .receipt {
+            background: white;
+            padding: 30px;
+            width: 80%;
+            max-width: 350px;
+            text-align: center;
+            border-radius: 4px; /* Receipt feel */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .receipt::before {
+            content: "";
+            position: absolute;
+            top: -5px; left: 0; width: 100%; height: 10px;
+            background: radial-gradient(circle, transparent 0.25em, white 0.25em);
+            background-size: 0.5em 0.5em;
+            background-repeat: repeat-x;
+        }
+
+        .receipt h3 { margin-top: 0; color: var(--text-color); }
+        .receipt-item { margin: 20px 0; font-size: 1.1rem; line-height: 1.6; }
+        .receipt-footer { font-size: 0.8rem; color: #999; margin-top: 20px; border-top: 1px dashed #ccc; padding-top: 10px; }
+        .close-btn { margin-top: 20px; background: transparent; border: 1px solid #aaa; padding: 5px 20px; cursor: pointer; border-radius: 20px; }
+
+    </style>
 </head>
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="zh-TW"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;Cozy Corner - Mily’s select&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>:root {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--bg-color: #f7f5f0; /* 米白紙質感 */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--text-color: #4a4a4a;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--accent-green: #5c7c58; /* 抹茶綠 */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--accent-brown: #8b5e3c; /* 咖啡褐 */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--light-gray: #e0e0e0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--card-bg: #ffffff;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>body {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: "Helvetica Neue", Helvetica, Arial, "PingFang TC", "Heiti TC", "Microsoft JhengHei", sans-serif;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: var(--bg-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>justify-content: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>min-height: 100vh;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.container {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>max-width: 500px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: var(--card-bg);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 30px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 4px 20px rgba(0,0,0,0.05);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>header {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 30px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-bottom: 1px solid var(--light-gray);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding-bottom: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>h1 {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1.8rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>letter-spacing: 2px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-color);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.subtitle {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.9rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #888;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-style: italic;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 5px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: serif;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* Tabs for Coffee vs Matcha */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.tabs {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 25px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>overflow: hidden;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid var(--light-gray);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.tab-btn {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>flex: 1;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: none;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: #fff;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: 0.3s;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #aaa;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.tab-btn.active {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #fff;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: bold;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.tab-coffee.active { background-color: var(--accent-brown); }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.tab-matcha.active { background-color: var(--accent-green); }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* Sections */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.menu-section {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: none;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>animation: fadeIn 0.5s;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.menu-section.active {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: block;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>@keyframes fadeIn {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>from { opacity: 0; transform: translateY(5px); }</p>
-<p class="p1"><span class="Apple-converted-space">            </span>to { opacity: 1; transform: translateY(0); }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>h2 {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1.1rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-left: 4px solid var(--text-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding-left: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 15px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 0;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.desc-text {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.9rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #666;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>line-height: 1.6;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* Form Elements */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.option-group {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 25px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.radio-label {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid var(--light-gray);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: 0.2s;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.radio-label:hover {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-color: #999;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* 抹茶溫度選項修正 */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.m-temp-label {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 12px 0; /* 修正選項上下間距 */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid var(--light-gray);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: 0.2s;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>justify-content: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>flex: 1;<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.m-temp-label input {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-right: 10px; /* 增加文字與 Radio Button 的距離 */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>accent-color: var(--text-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transform: scale(1.2);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.radio-label input {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-right: 15px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>accent-color: var(--text-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transform: scale(1.2);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.option-content {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>flex-direction: column;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.option-title {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: bold;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 2px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.option-desc {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.85rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #777;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.section-title {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.85rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-transform: uppercase;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>letter-spacing: 1px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #999;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: block;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* Action Button */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.submit-btn {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 15px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: none;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: bold;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: white;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: 0.3s;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.btn-coffee { background-color: var(--accent-brown); }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.btn-coffee:hover { background-color: #6d4a2f; }</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.btn-matcha { background-color: var(--accent-green); }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.btn-matcha:hover { background-color: #466042; }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* Modal / Receipt */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.modal-overlay {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: fixed;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>top: 0; left: 0; width: 100%; height: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: rgba(0,0,0,0.5);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: none;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>justify-content: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>z-index: 100;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.receipt {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: white;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 30px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 80%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>max-width: 350px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 4px; /* Receipt feel */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 10px 30px rgba(0,0,0,0.2);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.receipt::before {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>content: "";</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>top: -5px; left: 0; width: 100%; height: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: radial-gradient(circle, transparent 0.25em, white 0.25em);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-size: 0.5em 0.5em;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-repeat: repeat-x;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.receipt h3 { margin-top: 0; color: var(--text-color); }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.receipt-item { margin: 20px 0; font-size: 1.1rem; line-height: 1.6; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.receipt-footer { font-size: 0.8rem; color: #999; margin-top: 20px; border-top: 1px dashed #ccc; padding-top: 10px; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.close-btn { margin-top: 20px; background: transparent; border: 1px solid #aaa; padding: 5px 20px; cursor: pointer; border-radius: 20px; }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;div class="container"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;header&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;h1&gt;Cozy Corner&lt;/h1&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="subtitle"&gt;Mily’s select&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/header&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="tabs"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="tab-btn tab-coffee active" onclick="switchTab('coffee')"&gt;COFFEE&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="tab-btn tab-matcha" onclick="switchTab('matcha')"&gt;MATCHA&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="coffee-section" class="menu-section active"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;h2 style="border-color: var(--accent-brown);"&gt;手沖單品咖啡&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="desc-text"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>**淺焙・衣索比亞精選單品**</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;span class="section-title"&gt;I. SELECT YOUR BEAN (選豆)&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="option-group"&gt;</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;label class="radio-label"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;input type="radio" name="c-bean" value="C4 Coffee Co. - Banko Chelchele" checked&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="option-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="option-title"&gt;C4 Coffee Co. • Banko Chelchele&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="option-desc"&gt;產地：耶加雪菲 | 處理法：厭氧日曬 | 風味：莓果醬、橙糖。&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/label&gt;</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;label class="radio-label"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;input type="radio" name="c-bean" value="Berg Wu Selection - Sidama S24/02"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="option-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="option-title"&gt;Berg Wu Selection • Sidama S24/02&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="option-desc"&gt;來源：台灣冠軍選豆 | 產區：西達摩 | 處理法：日曬 | 風味：紅葡萄、細緻花香。&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/label&gt;</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;label class="radio-label"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;input type="radio" name="c-bean" value="Fuglen - Danche Espresso"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="option-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="option-title"&gt;Fuglen • Danche Espresso&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="option-desc"&gt;來源：東京 Fuglen | 產區：衣索比亞 | 處理法：水洗 | 風味：草莓、深可可。&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;span class="section-title"&gt;II. TEMPERATURE&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="option-group"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">             </span>&lt;label class="radio-label"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;input type="radio" name="c-temp" value="熱 (Hot)" checked&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;span class="option-title"&gt;熱 (Hot)&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;label class="radio-label"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;input type="radio" name="c-temp" value="冰 (Iced)"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;span class="option-title"&gt;冰 (Iced)&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="submit-btn btn-coffee" onclick="submitOrder('coffee')"&gt;選好了 (Order Coffee)&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="matcha-section" class="menu-section"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;h2 style="border-color: var(--accent-green);"&gt;手刷抹茶拿鐵&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;p class="desc-text" style="margin-bottom: 10px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>現點現刷・無糖・純粹茶香</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/p&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;span class="section-title"&gt;I. SELECT YOUR MATCHA (選茶韻)&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="option-group"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;label class="radio-label"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;input type="radio" name="m-powder" value="中村藤吉 [ 藤之白 ]" data-desc="清新 · 回甘"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="option-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="option-title"&gt;中村藤吉 [ 藤之白 ]&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="option-desc"&gt;清新 · 回甘&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/label&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;label class="radio-label"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;input type="radio" name="m-powder" value="一保堂 [ 幾世之昔 ]" data-desc="優雅 · 細緻"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="option-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="option-title"&gt;一保堂 [ 幾世之昔 ]&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="option-desc"&gt;優雅 · 細緻&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/label&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;label class="radio-label"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;input type="radio" name="m-powder" value="丸久小山園 [ 青嵐 ]" data-desc="經典 · 平衡" checked&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="option-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="option-title"&gt;丸久小山園 [ 青嵐 ]&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="option-desc"&gt;經典 · 平衡&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/label&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;label class="radio-label"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;input type="radio" name="m-powder" value="伊藤久右衛門 [ 清壽之森 ]" data-desc="深邃 · 醇厚"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="option-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="option-title"&gt;伊藤久右衛門 [ 清壽之森 ]&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="option-desc"&gt;深邃 · 醇厚&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/label&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;label class="radio-label"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;input type="radio" name="m-powder" value="鹿兒島 [ 有機抹茶 ]" data-desc="自然 · 草本"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="option-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="option-title"&gt;鹿兒島 [ 有機抹茶 ]&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="option-desc"&gt;自然 · 草本香&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;span class="section-title"&gt;II. SELECT YOUR BASE (選奶)&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="option-group"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;label class="radio-label"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;input type="radio" name="m-milk" value="許慶良鮮乳" checked&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;span class="option-title"&gt;許慶良鮮乳&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;label class="radio-label"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;input type="radio" name="m-milk" value="固力果杏仁奶"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;span class="option-title"&gt;固力果杏仁奶&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;label class="radio-label"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;input type="radio" name="m-milk" value="燕麥奶"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;span class="option-title"&gt;燕麥奶&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;span class="section-title"&gt;III. TEMPERATURE (溫度)&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="option-group" style="display: flex; gap: 10px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;label class="m-temp-label"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;input type="radio" name="m-temp" value="熱"&gt; 熱</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;label class="m-temp-label"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;input type="radio" name="m-temp" value="冰" checked&gt; 冰</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;label class="m-temp-label"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;input type="radio" name="m-temp" value="少冰"&gt; 少冰</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="submit-btn btn-matcha" onclick="submitOrder('matcha')"&gt;選好了 (Show Mily)&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1">&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;div class="modal-overlay" id="modal" onclick="closeModal()"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="receipt" onclick="event.stopPropagation()"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;h3&gt;Cozy Corner&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div style="font-size: 0.9rem; color:#888;"&gt;Order Ticket&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;hr style="border: 0; border-top: 1px dashed #ccc; margin: 15px 0;"&gt;</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="receipt-content" class="receipt-item"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;hr style="border: 0; border-top: 1px dashed #ccc; margin: 15px 0;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="receipt-footer"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>Enjoy your time at Cozy Corner.&lt;br&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>請出示此畫面給 Mily</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="close-btn" onclick="closeModal()"&gt;關閉&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1">&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>// 設置初始顯示為 Coffee</p>
-<p class="p1"><span class="Apple-converted-space">    </span>document.addEventListener('DOMContentLoaded', () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>switchTab('coffee');</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function switchTab(type) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>// 切換按鈕樣式</p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.querySelectorAll('.tab-btn').forEach(btn =&gt; btn.classList.remove('active'));</p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.querySelector('.tab-' + type).classList.add('active');</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// 切換內容顯示</p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.querySelectorAll('.menu-section').forEach(sec =&gt; sec.classList.remove('active'));</p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById(type + '-section').classList.add('active');</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function submitOrder(type) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>let content = "";</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>if (type === 'coffee') {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const bean = document.querySelector('input[name="c-bean"]:checked').value;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const temp = document.querySelector('input[name="c-temp"]:checked').value;</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>// 解析出選定的烘豆師和豆子名稱</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const [roaster, beanName] = bean.split(' - ');</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>content = `</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;strong&gt;☕ 手沖單品咖啡&lt;/strong&gt;&lt;br&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;span style="font-size:0.9em; color:#666;"&gt;淺焙・衣索比亞精選單品&lt;/span&gt;&lt;br&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;br&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>選豆：${beanName}&lt;br&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>來源：${roaster}&lt;br&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>溫度：${temp}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>`;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const powder = document.querySelector('input[name="m-powder"]:checked');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const milk = document.querySelector('input[name="m-milk"]:checked').value;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const temp = document.querySelector('input[name="m-temp"]:checked').value;</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>content = `</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;strong&gt;🍵 抹茶拿鐵&lt;/strong&gt;&lt;br&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;br&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>選茶：${powder.value}&lt;br&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>奶底：${milk}&lt;br&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>溫度：${temp}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>`;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('receipt-content').innerHTML = content;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('modal').style.display = 'flex';</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function closeModal() {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('modal').style.display = 'none';</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1">&lt;/script&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+
+<div class="container">
+    <header>
+        <h1>Cozy Corner</h1>
+        <div class="subtitle">Mily’s select</div>
+    </header>
+
+    <div class="tabs">
+        <button class="tab-btn tab-coffee active" onclick="switchTab('coffee')">COFFEE</button>
+        <button class="tab-btn tab-matcha" onclick="switchTab('matcha')">MATCHA</button>
+    </div>
+
+    <div id="coffee-section" class="menu-section active">
+        <h2 style="border-color: var(--accent-brown);">手沖單品咖啡</h2>
+        <div class="desc-text">
+            **淺焙・衣索比亞精選單品**
+        </div>
+        
+        <span class="section-title">I. SELECT YOUR BEAN (選豆)</span>
+        <div class="option-group">
+            
+            <label class="radio-label">
+                <input type="radio" name="c-bean" value="C4 Coffee Co. - Banko Chelchele" checked>
+                <div class="option-content">
+                    <span class="option-title">C4 Coffee Co. • Banko Chelchele</span>
+                    <span class="option-desc">產地：耶加雪菲 | 處理法：厭氧日曬 | 風味：莓果醬、橙糖。</span>
+                </div>
+            </label>
+            
+            <label class="radio-label">
+                <input type="radio" name="c-bean" value="Berg Wu Selection - Sidama S24/02">
+                <div class="option-content">
+                    <span class="option-title">Berg Wu Selection • Sidama S24/02</span>
+                    <span class="option-desc">來源：台灣冠軍選豆 | 產區：西達摩 | 處理法：日曬 | 風味：紅葡萄、細緻花香。</span>
+                </div>
+            </label>
+            
+            <label class="radio-label">
+                <input type="radio" name="c-bean" value="Fuglen - Danche Espresso">
+                <div class="option-content">
+                    <span class="option-title">Fuglen • Danche Espresso</span>
+                    <span class="option-desc">來源：東京 Fuglen | 產區：衣索比亞 | 處理法：水洗 | 風味：草莓、深可可。</span>
+                </div>
+            </label>
+        </div>
+
+        <span class="section-title">II. TEMPERATURE</span>
+        <div class="option-group">
+             <label class="radio-label">
+                <input type="radio" name="c-temp" value="熱 (Hot)" checked>
+                <span class="option-title">熱 (Hot)</span>
+            </label>
+            <label class="radio-label">
+                <input type="radio" name="c-temp" value="冰 (Iced)">
+                <span class="option-title">冰 (Iced)</span>
+            </label>
+        </div>
+
+        <button class="submit-btn btn-coffee" onclick="submitOrder('coffee')">選好了 (Order Coffee)</button>
+    </div>
+
+    <div id="matcha-section" class="menu-section">
+        <h2 style="border-color: var(--accent-green);">手刷抹茶拿鐵</h2>
+        <p class="desc-text" style="margin-bottom: 10px;">
+            現點現刷・無糖・純粹茶香
+        </p>
+
+        <span class="section-title">I. SELECT YOUR MATCHA (選茶韻)</span>
+        <div class="option-group">
+            <label class="radio-label">
+                <input type="radio" name="m-powder" value="中村藤吉 [ 藤之白 ]" data-desc="清新 · 回甘">
+                <div class="option-content">
+                    <span class="option-title">中村藤吉 [ 藤之白 ]</span>
+                    <span class="option-desc">清新 · 回甘</span>
+                </div>
+            </label>
+
+            <label class="radio-label">
+                <input type="radio" name="m-powder" value="一保堂 [ 幾世之昔 ]" data-desc="優雅 · 細緻">
+                <div class="option-content">
+                    <span class="option-title">一保堂 [ 幾世之昔 ]</span>
+                    <span class="option-desc">優雅 · 細緻</span>
+                </div>
+            </label>
+
+            <label class="radio-label">
+                <input type="radio" name="m-powder" value="丸久小山園 [ 青嵐 ]" data-desc="經典 · 平衡" checked>
+                <div class="option-content">
+                    <span class="option-title">丸久小山園 [ 青嵐 ]</span>
+                    <span class="option-desc">經典 · 平衡</span>
+                </div>
+            </label>
+
+            <label class="radio-label">
+                <input type="radio" name="m-powder" value="伊藤久右衛門 [ 清壽之森 ]" data-desc="深邃 · 醇厚">
+                <div class="option-content">
+                    <span class="option-title">伊藤久右衛門 [ 清壽之森 ]</span>
+                    <span class="option-desc">深邃 · 醇厚</span>
+                </div>
+            </label>
+
+            <label class="radio-label">
+                <input type="radio" name="m-powder" value="鹿兒島 [ 有機抹茶 ]" data-desc="自然 · 草本">
+                <div class="option-content">
+                    <span class="option-title">鹿兒島 [ 有機抹茶 ]</span>
+                    <span class="option-desc">自然 · 草本香</span>
+                </div>
+            </label>
+        </div>
+
+        <span class="section-title">II. SELECT YOUR BASE (選奶)</span>
+        <div class="option-group">
+            <label class="radio-label">
+                <input type="radio" name="m-milk" value="許慶良鮮乳" checked>
+                <span class="option-title">許慶良鮮乳</span>
+            </label>
+            <label class="radio-label">
+                <input type="radio" name="m-milk" value="固力果杏仁奶">
+                <span class="option-title">固力果杏仁奶</span>
+            </label>
+            <label class="radio-label">
+                <input type="radio" name="m-milk" value="燕麥奶">
+                <span class="option-title">燕麥奶</span>
+            </label>
+        </div>
+
+        <span class="section-title">III. TEMPERATURE (溫度)</span>
+        <div class="option-group" style="display: flex; gap: 10px;">
+            <label class="m-temp-label">
+                <input type="radio" name="m-temp" value="熱"> 熱
+            </label>
+            <label class="m-temp-label">
+                <input type="radio" name="m-temp" value="冰" checked> 冰
+            </label>
+            <label class="m-temp-label">
+                <input type="radio" name="m-temp" value="少冰"> 少冰
+            </label>
+        </div>
+
+        <button class="submit-btn btn-matcha" onclick="submitOrder('matcha')">選好了 (Show Mily)</button>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modal" onclick="closeModal()">
+    <div class="receipt" onclick="event.stopPropagation()">
+        <h3>Cozy Corner</h3>
+        <div style="font-size: 0.9rem; color:#888;">Order Ticket</div>
+        <hr style="border: 0; border-top: 1px dashed #ccc; margin: 15px 0;">
+        
+        <div id="receipt-content" class="receipt-item">
+            </div>
+
+        <hr style="border: 0; border-top: 1px dashed #ccc; margin: 15px 0;">
+        <div class="receipt-footer">
+            Enjoy your time at Cozy Corner.<br>
+            請出示此畫面給 Mily
+        </div>
+        <button class="close-btn" onclick="closeModal()">關閉</button>
+    </div>
+</div>
+
+<script>
+    // 設置初始顯示為 Coffee
+    document.addEventListener('DOMContentLoaded', () => {
+        switchTab('coffee');
+    });
+
+    function switchTab(type) {
+        // 切換按鈕樣式
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelector('.tab-' + type).classList.add('active');
+
+        // 切換內容顯示
+        document.querySelectorAll('.menu-section').forEach(sec => sec.classList.remove('active'));
+        document.getElementById(type + '-section').classList.add('active');
+    }
+
+    function submitOrder(type) {
+        let content = "";
+        
+        if (type === 'coffee') {
+            const bean = document.querySelector('input[name="c-bean"]:checked').value;
+            const temp = document.querySelector('input[name="c-temp"]:checked').value;
+            
+            // 解析出選定的烘豆師和豆子名稱
+            const [roaster, beanName] = bean.split(' - ');
+
+            content = `
+                <strong>☕ 手沖單品咖啡</strong><br>
+                <span style="font-size:0.9em; color:#666;">淺焙・衣索比亞精選單品</span><br>
+                <br>
+                選豆：${beanName}<br>
+                來源：${roaster}<br>
+                溫度：${temp}
+            `;
+        } else {
+            const powder = document.querySelector('input[name="m-powder"]:checked');
+            const milk = document.querySelector('input[name="m-milk"]:checked').value;
+            const temp = document.querySelector('input[name="m-temp"]:checked').value;
+            
+            content = `
+                <strong>🍵 抹茶拿鐵</strong><br>
+                <br>
+                選茶：${powder.value}<br>
+                奶底：${milk}<br>
+                溫度：${temp}
+            `;
+        }
+
+        document.getElementById('receipt-content').innerHTML = content;
+        document.getElementById('modal').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('modal').style.display = 'none';
+    }
+</script>
+
 </body>
 </html>
